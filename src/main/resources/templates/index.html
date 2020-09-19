@@ -1,0 +1,42 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="htmlhead">
+
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <meta name="description" content=""></meta>
+    <meta name="author" content=""></meta>
+
+    <title>后台登录</title>
+    <script th:src="@{/webjars/jquery/2.0.3/jquery.min.js}"></script>
+    <link th:href="@{/css/login.css}" rel="stylesheet"></link>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var  err='${err}';
+
+        });
+    </script>
+</head>
+<body>
+
+<div class="login">
+    <div class="message">亚太餐饮-管理登录</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" action="LoginRestController/login">
+        <input name="userName" placeholder="用户名" required="true" type="text">
+        <hr class="hr15">
+        <input name="passWord" placeholder="密码" required="true" type="password">
+        <hr class="hr15">
+        <input value="登录" style="width:100%;" type="submit">
+        <hr class="hr20">
+        <!-- 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> -->
+    </form>
+
+
+</div>
+
+
+</body>
+</html>
