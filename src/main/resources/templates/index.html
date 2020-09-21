@@ -7,36 +7,92 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
     <meta name="description" content=""></meta>
     <meta name="author" content=""></meta>
-
     <title>后台登录</title>
-    <script th:src="@{/webjars/jquery/2.0.3/jquery.min.js}"></script>
     <link th:href="@{/css/login.css}" rel="stylesheet"></link>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var  err='${err}';
-
-        });
-    </script>
+    <script th:src="@{/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}" media="all" />
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
 </head>
 <body>
+
 
 <div class="login">
     <div class="message">亚太餐饮-管理登录</div>
     <div id="darkbannerwrap"></div>
 
-    <form method="post" action="LoginRestController/login">
-        <input name="userName" placeholder="用户名" required="true" type="text">
+    <form id="loginForm" class="layui-form" method="post" >
+        <input name="userId" placeholder="用户名" required="true" type="text">
         <hr class="hr15">
         <input name="passWord" placeholder="密码" required="true" type="password">
         <hr class="hr15">
-        <input value="登录" style="width:100%;" type="submit">
+        <input value="登录" style="width:100%;" type="submit" onclick="login()">
         <hr class="hr20">
         <!-- 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> -->
     </form>
-
-
 </div>
 
+<script type="text/javascript">
+    var baseURL='${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}';
+    function CheckIsNullOrEmpty(value) {
+        //正则表达式用于判斷字符串是否全部由空格或换行符组成
+        var reg = /^\s*$/
+        //返回值为true表示不是空字符串
+        return (value != null && value != undefined && !reg.test(value));
+    }
 
+    function login() {
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "text",//预期服务器返回的数据类型
+            url: "LoginRestController/login" ,//url
+            data: $('#loginForm').serialize(),
+            success: function (err) {
+                if(CheckIsNullOrEmpty(err)){
+                    layui.use('layer', function(){ //独立版的layer无需执行这一句
+                        var layer = layui.layer;
+                        layer.msg('hello');
+                        /*layer.open({
+                            type: 1
+                            ,offset: 't' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                            ,id: 'layerDemo' //防止重复弹出
+                            ,content: '<div style="padding: 20px 100px;">'+ err +'</div>'
+                            ,btn: '关闭'
+                            ,btnAlign: 'c' //按钮居中
+                            ,shade: 0 //不显示遮罩
+                            ,yes: function(){
+                                layer.closeAll();
+                            }
+                        });*/
+
+                    });
+                }else{
+                    window.location.href=baseURL+"main.jsp";
+                }
+
+            },
+            error : function() {
+                layui.use('layer', function(){ //独立版的layer无需执行这一句
+                    layer = layui.layer;
+                    layer.open({
+                        type: 1
+                        ,offset: 't' //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+                        ,id: 'layererr' //防止重复弹出
+                        ,content: '<div style="padding: 20px 100px;">'+ '内部错误' +'</div>'
+                        ,btn: '关闭'
+                        ,btnAlign: 'c' //按钮居中
+                        ,shade: 0 //不显示遮罩
+                        ,yes: function(){
+                            layer.closeAll();
+                        }
+                    });
+
+                });
+
+            }
+
+        });
+    }
+</script>
 </body>
 </html>
