@@ -16,20 +16,41 @@
 <body>
 
 
-<div class="login">
+<!--<div class="login">
     <div class="message">亚太餐饮-管理登录</div>
     <div id="darkbannerwrap"></div>
-
     <form id="loginForm" class="layui-form" method="post" >
-        <input name="userId" placeholder="用户名" required="true" type="text">
+        <input name="userId" placeholder="用户名" lay-verify="required" type="text">
         <hr class="hr15">
-        <input name="passWord" placeholder="密码" required="true" type="password">
+        <input name="passWord" placeholder="密码"lay-verify="required"  type="password">
         <hr class="hr15">
         <input value="登录" style="width:100%;" type="submit" onclick="login()">
         <hr class="hr20">
-        <!-- 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> -->
+        &lt;!&ndash; 帮助 <a onClick="alert('请联系管理员')">忘记密码</a> &ndash;&gt;
+    </form>
+</div>-->
+
+
+<div class="login">
+    <div class="message">亚太餐饮-管理登录</div>
+    <div id="darkbannerwrap"></div>
+    <form class="layui-form" action="">
+        <div class="layui-form-item" >
+                <input type="text" name="userId" required  lay-verify="required" placeholder="用户名" lay-reqtext="用户名不能为空！" autocomplete="off" class="layui-input">
+        </div>
+
+        <hr class="hr15">
+        <div class="layui-form-item">
+                <input type="password" name="password" required lay-verify="required" placeholder="密码" lay-reqtext="密码不能为空！" autocomplete="off" class="layui-input">
+        </div>
+        <hr class="hr15">
+        <div class="layui-form-item">
+                <button class="layui-btn" lay-submit lay-filter="formDemo"  style="width:100%;background: #27A9E3;">登录</button>
+        </div>
+        <hr class="hr20">
     </form>
 </div>
+
 
 <script type="text/javascript">
     var baseURL='${#httpServletRequest.getScheme() + "://" + #httpServletRequest.getServerName() + ":" + #httpServletRequest.getServerPort() + #httpServletRequest.getContextPath()}';
@@ -93,6 +114,16 @@
 
         });
     }
+    layui.use('form', function() {
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function (data) {
+            var layer = layui.layer;
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
 </script>
 </body>
 </html>
